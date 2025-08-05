@@ -1,0 +1,33 @@
+# Development files
+examples/
+netlify/
+public/
+index.html
+vite.config.ts
+vite-env.d.ts
+
+# Build artifacts
+*.log
+*.tsbuildinfo
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Node modules (should be installed by users)
+node_modules/
+
+# TypeScript config for development
+tsconfig.json
+tsconfig.lib.json
+
+# Package files
+package-lock.json 

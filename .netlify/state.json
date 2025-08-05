@@ -1,0 +1,21 @@
+{
+	"siteId": "bb6d565a-c345-4463-a60a-253abb387015",
+	"geolocation": {
+		"data": {
+			"city": "Azzano Decimo",
+			"country": {
+				"code": "IT",
+				"name": "Italy"
+			},
+			"subdivision": {
+				"code": "36",
+				"name": "Friuli Venezia Giulia"
+			},
+			"timezone": "Europe/Rome",
+			"latitude": 45.9143,
+			"longitude": 12.6666,
+			"postalCode": "33082"
+		},
+		"timestamp": 1754382268109
+	}
+}

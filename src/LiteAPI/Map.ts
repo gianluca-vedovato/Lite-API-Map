@@ -1,37 +1,109 @@
 import { throwError } from "../utils/throw-error"
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
+import { initMap } from './map-setup/init'
+import { type FilterOptions, type LiteAPIMap, type MapOptions } from '../types'
+import { addMapInteractions, setupClusters, setupHotelSource, updateSource } from "./map-setup"
 
-type MapOptions = {
-  liteApiApiKey: string,
-  placeId: string
-}
-  
-export const Map = {
-  init: async (selector: string | HTMLElement, { liteApiApiKey, placeId }: MapOptions) => {
-    mapboxgl.accessToken = 'pk.eyJ1IjoiaWNpbGl2ZSIsImEiOiJjbWRybjF0bnkwaTRqMmlzYTBoaHJ3am8yIn0.3N0rJnhEQnxWt3uxSXtsgg';
+// Base URL for API calls - empty in dev mode, full URL in production
+const baseUrl = import.meta.env.MODE === 'development' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+  ? '' 
+  : 'https://glcvdv-lite-api-map.netlify.app'
+
+export const Map: LiteAPIMap = {
+  map: null,
+  hotels: [],
+  options: null,
+  _getHotelsApiParams: null,
+  init: async (selector: string | HTMLElement, options: MapOptions): Promise<LiteAPIMap> => {
+    const { liteApiApiKey, placeId, language, currency } = options
+    Map.options = options
+
+    const accessToken = await fetch(`${baseUrl}/api/get-mapbox-access-token`)
+    const { accessToken: mapboxAccessToken } = await accessToken.json()
+    mapboxgl.accessToken = mapboxAccessToken
 
     const container: HTMLElement | null = typeof selector === 'string' ? document.querySelector(selector) : selector
 
     if (!container) {
       throwError('Container not found')
-      return
+      return Map
     }
-    const map = new mapboxgl.Map({
-      container, 
-      style: 'mapbox://styles/mapbox/streets-v12',
-      center: [-74.5, 40],
-      zoom: 9,
-    });
 
-    const response = await fetch('http://0.0.0.0:8000', {
+    Map.map = initMap(container)
+
+    const place = await fetch(`${baseUrl}/api/get-place`, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({
+        placeId,
         liteApiApiKey,
-        placeId
       })
     })
-    const data = await response.json()
-    console.log(data)
+    const { data: { lng, lat, locality } } = await place.json()
+
+    if (!lng || !lat) {
+      console.warn('No place found for ID:', placeId)
+      return Map
+    }
+
+    Map.map.setCenter([lng, lat])
+
+    Map._getHotelsApiParams = {
+      liteApiApiKey,
+      placeId,
+      placeCoordinates: {
+        lng,
+        lat
+      },
+      language: language || 'EN',
+      currency: currency || 'EUR',
+      locality
+    }
+
+    const ratesResponse = await fetch(`${baseUrl}/api/get-hotels`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(Map._getHotelsApiParams)
+    })
+
+    const { data: { hotels } } = await ratesResponse.json()
+
+    Map.hotels = hotels
+
+    setupHotelSource(Map.map, hotels, options)
+    
+    setupClusters(Map.map, options)
+
+    addMapInteractions(Map.map, options)
+
+    return Map
+  },
+  filter: async (filters: FilterOptions) => {
+    if (!Map.map || !Map.options) {
+      throwError('Map not initialized')
+      return
+    }
+
+    const ratesResponse = await fetch(`${baseUrl}/api/get-hotels`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        ...Map._getHotelsApiParams,
+        ...filters
+      })
+    })
+
+    const { data: { hotels } } = await ratesResponse.json()
+
+    Map.hotels = hotels
+
+    updateSource(Map.map, hotels, Map.options)
   }
 }
