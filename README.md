@@ -5,7 +5,7 @@ A lightweight JavaScript library for creating interactive hotel maps with Mapbox
 ## Installation
 
 ```bash
-npm install lite-api
+npm install glcvdv-lite-api-map
 ```
 
 ## Usage
@@ -13,7 +13,7 @@ npm install lite-api
 ### Basic Setup
 
 ```javascript
-import LiteAPI from 'lite-api';
+import LiteAPI from 'glcvdv-lite-api-map';
 
 // Initialize the map
 const map = await LiteAPI.Map.init('#map-container', {
@@ -81,22 +81,9 @@ await map.filter({
 
 ## Requirements
 
-- Mapbox GL JS (automatically included as a peer dependency)
 - A valid Lite API key
 - A place ID for the location you want to display
 
 ## Browser Support
 
 This library works in all modern browsers that support ES6 modules and the Mapbox GL JS library.
-
-## License
-
-MIT
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request 
