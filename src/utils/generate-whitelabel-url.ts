@@ -1,4 +1,4 @@
-import type { Hotel } from "../types";
+import type { Hotel } from "../types/index.js";
 
 export const generateWhitelabelUrl = (hotel: Hotel, options: { language: 'IT' | 'EN', currency: 'EUR' | 'USD' } = { language: 'EN', currency: 'EUR' }): string => {
   const params = {

@@ -1,4 +1,4 @@
-import { LiteAPI } from './LiteAPI/main'
+import { LiteAPI } from './LiteAPI/main.js'
 
 export default LiteAPI
 export { LiteAPI }

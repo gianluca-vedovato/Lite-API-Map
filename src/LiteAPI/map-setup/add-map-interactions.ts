@@ -1,6 +1,6 @@
-import type { Hotel, MapOptions } from "../../types";
+import type { Hotel, MapOptions } from "../../types/index.js";
 import mapboxgl from "mapbox-gl";
-import { generateWhitelabelUrl } from "../../utils/generate-whitelabel-url";
+import { generateWhitelabelUrl } from "../../utils/generate-whitelabel-url.js";
 
 export const addMapInteractions = (map: mapboxgl.Map, options: MapOptions) => {
   const popup = new mapboxgl.Popup({

@@ -1,4 +1,4 @@
-import { type MapOptions } from '../../types'
+import { type MapOptions } from '../../types/index.js'
 
 export const setupClusters = (map: mapboxgl.Map, options: MapOptions) => {
   if (!options.clusters) return

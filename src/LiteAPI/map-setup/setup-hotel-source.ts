@@ -1,4 +1,4 @@
-import { type Hotel, type MapOptions } from '../../types'
+import { type Hotel, type MapOptions } from '../../types/index.js'
 
 export const setupHotelSource = (map: mapboxgl.Map, hotels: Hotel[], options: MapOptions) => {
   const addSourceOptions: mapboxgl.GeoJSONSourceSpecification = {

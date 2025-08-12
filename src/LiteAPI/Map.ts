@@ -1,9 +1,9 @@
-import { throwError } from "../utils/throw-error"
+import { throwError } from "../utils/throw-error.js"
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
-import { initMap } from './map-setup/init'
-import { type FilterOptions, type LiteAPIMap, type MapOptions } from '../types'
-import { addMapInteractions, setupClusters, setupHotelSource, updateSource } from "./map-setup"
+import { initMap } from './map-setup/init.js'
+import { type FilterOptions, type LiteAPIMap, type MapOptions } from '../types/index.js'
+import { addMapInteractions, setupClusters, setupHotelSource, updateSource } from "./map-setup/index.js"
 
 // Base URL for API calls - empty in dev mode, full URL in production
 const baseUrl = import.meta.env.MODE === 'development' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 

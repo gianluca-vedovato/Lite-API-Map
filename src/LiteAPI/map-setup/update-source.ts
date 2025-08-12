@@ -1,7 +1,7 @@
-import { type Hotel, type MapOptions } from '../../types'
-import { setupHotelSource } from './setup-hotel-source'
-import { setupClusters } from './setup-clusters'
-import { addMapInteractions } from './add-map-interactions'
+import { type Hotel, type MapOptions } from '../../types/index.js'
+import { setupHotelSource } from './setup-hotel-source.js'
+import { setupClusters } from './setup-clusters.js'
+import { addMapInteractions } from './add-map-interactions.js'
 
 export const updateSource = (map: mapboxgl.Map, hotels: Hotel[], options: MapOptions) => {
   map.removeLayer('hotels')
